@@ -12,7 +12,8 @@
         [Required]
         public string Telefone { get; set; }
 
-        public ICollection<Plano> Planos { get; set; }
+        public int PlanoId { get; set; }
+        public Plano Plano { get; set; }
         public List<Pagamento> Pagamentos { get; set; }
     }
 }

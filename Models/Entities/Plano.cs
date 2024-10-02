@@ -6,7 +6,7 @@
         public string Descricao { get; set; }
         public decimal Preco { get; set; }
 
-        public int ClientId { get; set; }
-        public Cliente Cliente { get; set; }
+      
+
     }
 }

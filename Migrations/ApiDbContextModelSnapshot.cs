@@ -42,11 +42,16 @@ namespace academia.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<int>("PlanoId")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Telefone")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("PlanoId");
 
                     b.ToTable("Clientes");
                 });
@@ -61,9 +66,6 @@ namespace academia.Migrations
 
                     b.Property<DateTime>("Alteracao")
                         .HasColumnType("timestamp with time zone");
-
-                    b.Property<int>("ClientId")
-                        .HasColumnType("integer");
 
                     b.Property<int>("ClienteId")
                         .HasColumnType("integer");
@@ -96,12 +98,6 @@ namespace academia.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("ClientId")
-                        .HasColumnType("integer");
-
-                    b.Property<int?>("ClienteId")
-                        .HasColumnType("integer");
-
                     b.Property<string>("Descricao")
                         .HasColumnType("text");
 
@@ -113,9 +109,7 @@ namespace academia.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ClienteId");
-
-                    b.ToTable("Plano");
+                    b.ToTable("Planos");
                 });
 
             modelBuilder.Entity("academia.Models.Usuario", b =>
@@ -157,7 +151,7 @@ namespace academia.Migrations
                             Email = "admin@email.com.br",
                             Nome = "Administrator",
                             Perfil = 0,
-                            Senha = "$2a$11$4W9BlCYisYiMJIz4/PDgHeE5Ha/GjahQ7nCRWj7gTLx635UPbUMs2"
+                            Senha = "$2a$11$ZeYGi8/76lVrZ86LM3fDXOXwlFSzvhVPCf/9mUrb/jsfaFI2dYHdm"
                         },
                         new
                         {
@@ -165,8 +159,19 @@ namespace academia.Migrations
                             Email = "cliente@email.com.br",
                             Nome = "Cliente",
                             Perfil = 1,
-                            Senha = "$2a$11$i1C/1E/TRrjZH9/z8tIGYeVqlKqp3uK93EvwhChVfbHZk2FpttC12"
+                            Senha = "$2a$11$5JEu7d/ID09PHFlrpSIllO9s1ObogPb7NvnS0xSsJZZBKjlIxeyEW"
                         });
+                });
+
+            modelBuilder.Entity("academia.Models.Cliente", b =>
+                {
+                    b.HasOne("academia.Models.Plano", "Plano")
+                        .WithMany()
+                        .HasForeignKey("PlanoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Plano");
                 });
 
             modelBuilder.Entity("academia.Models.Pagamento", b =>
@@ -180,20 +185,9 @@ namespace academia.Migrations
                     b.Navigation("Cliente");
                 });
 
-            modelBuilder.Entity("academia.Models.Plano", b =>
-                {
-                    b.HasOne("academia.Models.Cliente", "Cliente")
-                        .WithMany("Planos")
-                        .HasForeignKey("ClienteId");
-
-                    b.Navigation("Cliente");
-                });
-
             modelBuilder.Entity("academia.Models.Cliente", b =>
                 {
                     b.Navigation("Pagamentos");
-
-                    b.Navigation("Planos");
                 });
 #pragma warning restore 612, 618
         }

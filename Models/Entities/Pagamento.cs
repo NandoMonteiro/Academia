@@ -11,12 +11,12 @@ namespace academia.Models
         
         public DateTime Criacao { get; set; }
         public DateTime Alteracao { get; set; }
-        [Required]
-        public int ClienteId { get; set; }
+        
 
         public MetodoPagamento Metodo { get; set; }
 
-        public int ClientId { get; set; }
+        [Required]
+        public int ClienteId { get; set; }
         public Cliente Cliente { get; set; }
          
     }
